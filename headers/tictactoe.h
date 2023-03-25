@@ -47,7 +47,6 @@
 
 #include <iostream>
 
-// Global variables
 class TicTacToe{
     public:
         TicTacToe();
