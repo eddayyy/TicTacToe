@@ -1,6 +1,6 @@
 /* ****************************************************************************************************************************
-// Program name : "TicTacToe Game".This program allows 2 players to play a game of TicTacToe in the terminal.                 *
-//                                                                                                                            *
+// Program name: "TicTacToe Game".This program allows 1 player to play a game of TicTacToe in the terminal against the        *
+//                alpha-beta pruning game algorithms.                                                                         *
 // This program is free software : you can redistribute it and / or modify it under the terms of the GNU General Public       *
 // License version 3 as published by the Free Software Foundation.This program is distributed in the hope that it             *
 // will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A            *
@@ -15,7 +15,7 @@
 //   Author email : eduardonunez @csu.fullerton.edu
 //
 // Program information
-//   Program name: TicTacToe Game
+//   Program name: TicTacToe MiniMax 
 //   Programming languages : C++
 //   Date program began : 2023 - Mar - 24 2300 PDT GMT - 07 : 00
 //   Date of last update : 2023 - Mar - 25 0108 PDT GMT - 07 : 00
@@ -24,7 +24,7 @@
 //   References consulted : C++ Standard Library, Stack Overflow, and cppreference.com
 
 // Purpose:
-//   This program demonstrates how to create a simple TicTacToe game that can be played by 2 players in the terminal.
+//   This program demonstrates how to create a simple TicTacToe game that is played in the terminal and how to implement the alpha-beta pruning algorithms.
 //   The intention is to teach readers the ins and outs of the program so they may recreate their own.
 
 // This file
