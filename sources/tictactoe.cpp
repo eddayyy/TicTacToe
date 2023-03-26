@@ -176,6 +176,7 @@ void TicTacToe::game()
         std::cout << "It's player " << current_player << "'s turn. Enter your move:\n";
         int slot;
         std::cin >> slot;
+
         // Checking for invalid inputs that cause std::cin to fail due to type incompatibilities
         while (std::cin.fail())
         {
@@ -187,6 +188,7 @@ void TicTacToe::game()
             std::cout << "Invalid input. Please enter an integer: ";
             std::cin >> slot;
         }
+
         if (slot < 1 || slot > 9)
         {
             std::cout << "That is an invalid slot, please try again!\n";
