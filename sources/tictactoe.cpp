@@ -167,7 +167,7 @@ void TicTacToe::game()
         std::cout << "It's player " << current_player << "'s turn. Enter your move:\n";
         int slot;
         std::cin >> slot;
-        if (slot < 1 || slot > 9)
+        if (slot < 1 || slot > 9 || !int(slot))
         {
             std::cout << "That is an invalid slot, please try again!\n";
             i--;

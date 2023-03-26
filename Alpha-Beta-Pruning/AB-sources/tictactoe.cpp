@@ -298,7 +298,6 @@ int TicTacToe::evaluateBoard()
 }
 
 // Minimax function for determining the best move for the AI
-// Minimax function for determining the best move for the AI
 int TicTacToe::minimax(int depth, int maxDepth, bool isMax, int alpha, int beta)
 {
     // Evaluate the current board state
