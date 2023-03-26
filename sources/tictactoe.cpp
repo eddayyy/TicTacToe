@@ -43,13 +43,22 @@
 // ===== Begin code area ======================================================================================================== */
 
 #include <iostream>
+
+#include <limits>
+
 #include "../headers/tictactoe.h"
 
 TicTacToe::TicTacToe()
 {
-    board[0][0] = '1'; board[0][1] = '2'; board[0][2] = '3';
-    board[1][0] = '4'; board[1][1] = '5'; board[1][2] = '6';
-    board[2][0] = '7'; board[2][1] = '8'; board[2][2] = '9';
+    board[0][0] = '1';
+    board[0][1] = '2';
+    board[0][2] = '3';
+    board[1][0] = '4';
+    board[1][1] = '5';
+    board[1][2] = '6';
+    board[2][0] = '7';
+    board[2][1] = '8';
+    board[2][2] = '9';
     current_marker = 'X';
     current_player = 1;
 }
@@ -167,6 +176,17 @@ void TicTacToe::game()
         std::cout << "It's player " << current_player << "'s turn. Enter your move:\n";
         int slot;
         std::cin >> slot;
+        // Checking for invalid inputs that cause std::cin to fail due to type incompatibilities
+        while (std::cin.fail())
+        {
+            // Clear Fail state
+            std::cin.clear();
+            // Ignore invalid input by clearing the input buffer
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            // Prompt user agaain and *HOPEFULLY* get a valid input
+            std::cout << "Invalid input. Please enter an integer: ";
+            std::cin >> slot;
+        }
         if (slot < 1 || slot > 9)
         {
             std::cout << "That is an invalid slot, please try again!\n";

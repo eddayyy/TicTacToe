@@ -42,17 +42,27 @@
 
 // ===== Begin code area ======================================================================================================== */
 
-#include <iostream>
 #include <climits>
+#include <limits>
+#include <typeinfo>
+
+#include <iostream>
+
 #include "../AB-headers/tictactoe.h"
 
 // Constructor initializes the board, current marker, and current player
 TicTacToe::TicTacToe()
 {
     // Initialize board
-    board[0][0] = '1'; board[0][1] = '2'; board[0][2] = '3';
-    board[1][0] = '4'; board[1][1] = '5'; board[1][2] = '6';
-    board[2][0] = '7'; board[2][1] = '8'; board[2][2] = '9';
+    board[0][0] = '1';
+    board[0][1] = '2';
+    board[0][2] = '3';
+    board[1][0] = '4';
+    board[1][1] = '5';
+    board[1][2] = '6';
+    board[2][0] = '7';
+    board[2][1] = '8';
+    board[2][2] = '9';
 
     // Set initial current marker and current player
     current_marker = 'X';
@@ -72,25 +82,25 @@ void TicTacToe::drawboard()
 // Function to place a marker on the board
 bool TicTacToe::placeMarker(int slot)
 {
-    int row = slot / 3, col = 0;                      // Calculate row and initialize col to 0
+    int row = slot / 3, col = 0; // Calculate row and initialize col to 0
 
-    if (slot % 3 == 0)                                // If slot is divisible by 3
-    {                                        
-        row = row - 1;                                // Decrement row by 1
-        col = 2;                                      // Set col to 2
-    }
-    else                                              // If slot is not divisible by 3
+    if (slot % 3 == 0) // If slot is divisible by 3
     {
-        col = slot % 3 - 1;                           // Calculate col based on the remainder
+        row = row - 1; // Decrement row by 1
+        col = 2;       // Set col to 2
+    }
+    else // If slot is not divisible by 3
+    {
+        col = slot % 3 - 1; // Calculate col based on the remainder
     }
 
     // Check if the slot on the board is not already occupied by 'X' or 'O'
     if (board[row][col] != 'X' && board[row][col] != 'O')
     {
-        board[row][col] = current_marker;             // Place the current marker on the board
-        return true;                                  // Return true for successful placement
+        board[row][col] = current_marker; // Place the current marker on the board
+        return true;                      // Return true for successful placement
     }
-    return false;                                     // Return false for unsuccessful placement (slot is already occupied)
+    return false; // Return false for unsuccessful placement (slot is already occupied)
 }
 
 // Function to check for a winner
@@ -101,25 +111,25 @@ int TicTacToe::winner()
         // Check for winning row
         if (board[i][0] == board[i][1] && board[i][1] == board[i][2])
         {
-            return current_player;                    // Current player wins if row has the same marker
+            return current_player; // Current player wins if row has the same marker
         }
         // Check for winning column
         if (board[0][i] == board[1][i] && board[1][i] == board[2][i])
         {
-            return current_player;                    // Current player wins if column has the same marker
+            return current_player; // Current player wins if column has the same marker
         }
     }
     // Check for winning diagonal (top-left to bottom-right)
     if (board[0][0] == board[1][1] && board[1][1] == board[2][2])
     {
-        return current_player;                        // Current player wins if diagonal has the same marker
+        return current_player; // Current player wins if diagonal has the same marker
     }
     // Check for winning diagonal (top-right to bottom-left)
     if (board[0][2] == board[1][1] && board[1][1] == board[2][0])
     {
-        return current_player;                        // Current player wins if diagonal has the same marker
+        return current_player; // Current player wins if diagonal has the same marker
     }
-    return 0;                                         // No winner found
+    return 0; // No winner found
 }
 
 // Function to swap the current player and marker
@@ -185,6 +195,19 @@ void TicTacToe::game()
             std::cout << "It's player " << current_player << "'s turn. Enter your move:\n";
             int slot;
             std::cin >> slot;
+
+            // Checking for invalid inputs that cause std::cin to fail due to type incompatibilities
+            while (std::cin.fail())
+            {
+                // Clear Fail state
+                std::cin.clear();
+                // Ignore invalid input by clearing the input buffer
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                // Prompt user agaain and *HOPEFULLY* get a valid input
+                std::cout << "Invalid input. Please enter an integer: ";
+                std::cin >> slot;
+            }
+
             if (slot < 1 || slot > 9)
             {
                 std::cout << "That is an invalid slot, please try again!\n";
@@ -203,7 +226,7 @@ void TicTacToe::game()
             // Player 2 (AI) move
             int bestVal = INT_MIN;
             int bestMove = -1;
-            int maxDepth = 9; // Adjust the maxDepth for iterative deepening
+            int maxDepth = 9; // 9 Possible moves in a Tic-Tac-Toe game
 
             for (int depth = 1; depth <= maxDepth; depth++)
             {
@@ -256,48 +279,62 @@ void TicTacToe::game()
 
 int TicTacToe::evaluateBoard()
 {
+    // Iterate through each row and column of the 3x3 board
     for (int i = 0; i < 3; i++)
     {
-        // Check rows
+        // Check rows for a winning combination
+        // If all three cells in the row are the same (either 'O' or 'X')
         if (board[i][0] == board[i][1] && board[i][1] == board[i][2])
         {
+            // If the winning combination is 'O', return a score of 10
             if (board[i][0] == 'O')
                 return 10;
+            // If the winning combination is 'X', return a score of -10
             else if (board[i][0] == 'X')
                 return -10;
         }
 
-        // Check columns
+        // Check columns for a winning combination
+        // If all three cells in the column are the same (either 'O' or 'X')
         if (board[0][i] == board[1][i] && board[1][i] == board[2][i])
         {
+            // If the winning combination is 'O', return a score of 10
             if (board[0][i] == 'O')
                 return 10;
+            // If the winning combination is 'X', return a score of -10
             else if (board[0][i] == 'X')
                 return -10;
         }
     }
 
-    // Check diagonals
+    // Check the first diagonal for a winning combination
+    // If all three cells in the diagonal are the same (either 'O' or 'X')
     if (board[0][0] == board[1][1] && board[1][1] == board[2][2])
     {
+        // If the winning combination is 'O', return a score of 10
         if (board[0][0] == 'O')
             return 10;
+        // If the winning combination is 'X', return a score of -10
         else if (board[0][0] == 'X')
             return -10;
     }
 
+    // Check the second diagonal for a winning combination
+    // If all three cells in the diagonal are the same (either 'O' or 'X')
     if (board[0][2] == board[1][1] && board[1][1] == board[2][0])
     {
+        // If the winning combination is 'O', return a score of 10
         if (board[0][2] == 'O')
             return 10;
+        // If the winning combination is 'X', return a score of -10
         else if (board[0][2] == 'X')
             return -10;
     }
 
-    return 0; // No winner, return 0
+    // If there is no winner yet, return a score of 0
+    return 0;
 }
 
-// Minimax function for determining the best move for the AI
 // Minimax function for determining the best move for the AI
 int TicTacToe::minimax(int depth, int maxDepth, bool isMax, int alpha, int beta)
 {
