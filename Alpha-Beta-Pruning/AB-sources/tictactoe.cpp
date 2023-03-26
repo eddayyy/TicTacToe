@@ -1,0 +1,376 @@
+/* ****************************************************************************************************************************
+// Program name: "TicTacToe Game".This program allows 1 player to play a game of TicTacToe in the terminal against the        *
+//                alpha-beta pruning game algorithms.                                                                         *
+// This program is free software : you can redistribute it and / or modify it under the terms of the GNU General Public       *
+// License version 3 as published by the Free Software Foundation.This program is distributed in the hope that it             *
+// will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A            *
+// PARTICULAR PURPOSE.See the GNU General Public License for more details.A copy of the GNU General Public                    *
+// License v3 is available here : < https: // www.gnu.org/licenses/>.                                                         *
+// ****************************************************************************************************************************
+
+// ========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1=========2=========3**
+
+// Author Information
+//   Author name : Eduardo M.Nunez Gomez
+//   Author email : eduardonunez.eng@gmail.com
+//
+// Program information
+//   Program name: Alpha-Beta Pruning Tic-Tac-Toe
+//   Programming languages : C++
+//   Date program began : 2023 - Mar - 24 0200 PDT GMT - 07 : 00
+//   Date of last update : (2023 - Mar - 25 0108 PDT GMT - 07 : 00)
+//   Files in this program : main.cpp, tictactoe.cpp, tictactoe.h, run_tictactoe.sh
+//   Status : In Progress.
+//   References consulted : C++ Standard Library, Stack Overflow, and cppreference.com
+
+// Purpose:
+//   This program demonstrates how to create a simple TicTacToe game that is played in the terminal and how to implement the alpha-beta pruning algorithms.
+//   The intention is to teach readers the ins and outs of the program so they may recreate their own.
+
+// This file
+//   File name : tictactoe.cpp
+//   Language : C++
+// ========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1=========2=========3**
+// Compiling and Linking this program and file:
+// File : r.sh
+// All assembling, compiling, and linking has been condensed for the user into a single file the following is a user - tutorial.
+
+// Instructions : Enter the following in your linux terminal
+
+// chmod + x r.sh
+// ./ r.sh
+
+// ===== Begin code area ======================================================================================================== */
+
+#include <iostream>
+#include <climits>
+#include "../AB-headers/tictactoe.h"
+
+// Constructor initializes the board, current marker, and current player
+TicTacToe::TicTacToe()
+{
+    // Initialize board
+    board[0][0] = '1'; board[0][1] = '2'; board[0][2] = '3';
+    board[1][0] = '4'; board[1][1] = '5'; board[1][2] = '6';
+    board[2][0] = '7'; board[2][1] = '8'; board[2][2] = '9';
+
+    // Set initial current marker and current player
+    current_marker = 'X';
+    current_player = 1;
+}
+
+// Function to draw the Tic-Tac-Toe board
+void TicTacToe::drawboard()
+{
+    std::cout << " " << board[0][0] << " | " << board[0][1] << " | " << board[0][2] << std::endl;
+    std::cout << "-----------\n";
+    std::cout << " " << board[1][0] << " | " << board[1][1] << " | " << board[1][2] << std::endl;
+    std::cout << "-----------\n";
+    std::cout << " " << board[2][0] << " | " << board[2][1] << " | " << board[2][2] << std::endl;
+}
+
+// Function to place a marker on the board
+bool TicTacToe::placeMarker(int slot)
+{
+    int row = slot / 3, col = 0;                      // Calculate row and initialize col to 0
+
+    if (slot % 3 == 0)                                // If slot is divisible by 3
+    {                                        
+        row = row - 1;                                // Decrement row by 1
+        col = 2;                                      // Set col to 2
+    }
+    else                                              // If slot is not divisible by 3
+    {
+        col = slot % 3 - 1;                           // Calculate col based on the remainder
+    }
+
+    // Check if the slot on the board is not already occupied by 'X' or 'O'
+    if (board[row][col] != 'X' && board[row][col] != 'O')
+    {
+        board[row][col] = current_marker;             // Place the current marker on the board
+        return true;                                  // Return true for successful placement
+    }
+    return false;                                     // Return false for unsuccessful placement (slot is already occupied)
+}
+
+// Function to check for a winner
+int TicTacToe::winner()
+{
+    for (int i = 0; i < 3; i++)
+    {
+        // Check for winning row
+        if (board[i][0] == board[i][1] && board[i][1] == board[i][2])
+        {
+            return current_player;                    // Current player wins if row has the same marker
+        }
+        // Check for winning column
+        if (board[0][i] == board[1][i] && board[1][i] == board[2][i])
+        {
+            return current_player;                    // Current player wins if column has the same marker
+        }
+    }
+    // Check for winning diagonal (top-left to bottom-right)
+    if (board[0][0] == board[1][1] && board[1][1] == board[2][2])
+    {
+        return current_player;                        // Current player wins if diagonal has the same marker
+    }
+    // Check for winning diagonal (top-right to bottom-left)
+    if (board[0][2] == board[1][1] && board[1][1] == board[2][0])
+    {
+        return current_player;                        // Current player wins if diagonal has the same marker
+    }
+    return 0;                                         // No winner found
+}
+
+// Function to swap the current player and marker
+void TicTacToe::swapPlayerAndMarker()
+{
+    // Swap the current marker (X or O)
+    if (current_marker == 'X')
+    {
+        current_marker = 'O';
+    }
+    else
+    {
+        current_marker = 'X';
+    }
+
+    // Swap the current player (1 or 2)
+    if (current_player == 1)
+    {
+        current_player = 2;
+    }
+    else
+    {
+        current_player = 1;
+    }
+}
+
+// Function to validate the player's marker choice
+void TicTacToe::validateMarker(char &player1_marker)
+{
+    if (player1_marker != 'X' && player1_marker != 'O')
+    {
+        std::cout << "Invalid marker please try again!\n";
+        std::cout << "Player 1 choose your marker (X or O):\n";
+        std::cin >> player1_marker;
+        validateMarker(player1_marker);
+    }
+}
+
+// Main game loop function
+void TicTacToe::game()
+{
+    char player1_marker;
+    std::cout << "Welcome to Eduardo Nunez's Tic-Tac-Toe Game!\n"
+                 "Player 1 choose your marker (X or O):\n";
+    std::cin >> player1_marker;
+
+    // Validate the player's marker input
+    validateMarker(player1_marker);
+
+    current_player = 1;
+    current_marker = player1_marker;
+
+    drawboard();
+
+    int player_winner;
+
+    // Game can only last 9 moves
+    for (int i = 0; i < 9; i++)
+    {
+        // Collecting player moves
+        if (current_player == 1)
+        {
+            std::cout << "It's player " << current_player << "'s turn. Enter your move:\n";
+            int slot;
+            std::cin >> slot;
+            if (slot < 1 || slot > 9)
+            {
+                std::cout << "That is an invalid slot, please try again!\n";
+                i--;
+                continue;
+            }
+            if (!placeMarker(slot))
+            {
+                std::cout << "That slot is already taken, Try another slot!\n";
+                i--;
+                continue;
+            }
+        }
+        else
+        {
+            // Player 2 (AI) move
+            int bestVal = INT_MIN;
+            int bestMove = -1;
+            int maxDepth = 9; // Adjust the maxDepth for iterative deepening
+
+            for (int depth = 1; depth <= maxDepth; depth++)
+            {
+                for (int slot = 1; slot <= 9; slot++)
+                {
+                    int row = (slot - 1) / 3;
+                    int col = (slot - 1) % 3;
+
+                    if (board[row][col] != 'X' && board[row][col] != 'O')
+                    {
+                        char prev = board[row][col];
+                        board[row][col] = 'O';
+                        int moveVal = minimax(0, depth, false, INT_MIN, INT_MAX);
+                        board[row][col] = prev;
+
+                        if (moveVal > bestVal)
+                        {
+                            bestVal = moveVal;
+                            bestMove = slot;
+                        }
+                    }
+                }
+            }
+            placeMarker(bestMove);
+            std::cout << "Player 2 (AI) played at slot " << bestMove << std::endl;
+        }
+
+        // Playing game
+        drawboard();
+        // Check for a winner
+        player_winner = winner();
+        if (player_winner == 1)
+        {
+            std::cout << "Player 1 is the winner!\n";
+            break;
+        }
+        else if (player_winner == 2)
+        {
+            std::cout << "Player 2 (AI) is the winner!\n";
+            break;
+        }
+        swapPlayerAndMarker();
+    }
+
+    if (player_winner == 0)
+    {
+        std::cout << "It's a draw!\n";
+    }
+}
+
+int TicTacToe::evaluateBoard()
+{
+    for (int i = 0; i < 3; i++)
+    {
+        // Check rows
+        if (board[i][0] == board[i][1] && board[i][1] == board[i][2])
+        {
+            if (board[i][0] == 'O')
+                return 10;
+            else if (board[i][0] == 'X')
+                return -10;
+        }
+
+        // Check columns
+        if (board[0][i] == board[1][i] && board[1][i] == board[2][i])
+        {
+            if (board[0][i] == 'O')
+                return 10;
+            else if (board[0][i] == 'X')
+                return -10;
+        }
+    }
+
+    // Check diagonals
+    if (board[0][0] == board[1][1] && board[1][1] == board[2][2])
+    {
+        if (board[0][0] == 'O')
+            return 10;
+        else if (board[0][0] == 'X')
+            return -10;
+    }
+
+    if (board[0][2] == board[1][1] && board[1][1] == board[2][0])
+    {
+        if (board[0][2] == 'O')
+            return 10;
+        else if (board[0][2] == 'X')
+            return -10;
+    }
+
+    return 0; // No winner, return 0
+}
+
+// Minimax function for determining the best move for the AI
+// Minimax function for determining the best move for the AI
+int TicTacToe::minimax(int depth, int maxDepth, bool isMax, int alpha, int beta)
+{
+    // Evaluate the current board state
+    int score = evaluateBoard();
+    // If AI is winning, return score adjusted for depth
+    if (score == 10)
+        return score - depth;
+    // If the opponent is winning, return score adjusted for depth
+    if (score == -10)
+        return score + depth;
+    // If the board is full, return a draw (0)
+    if (depth == 9)
+        return 0;
+
+    // If it's AI's turn (maximizing player)
+    if (isMax)
+    {
+        int bestVal = INT_MIN;
+        // Iterate through the board
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                // If the cell is empty
+                if (board[i][j] != 'X' && board[i][j] != 'O')
+                {
+                    // Make a temporary move for the AI
+                    char prev = board[i][j];
+                    board[i][j] = 'O';
+                    // Recursively call minimax for the next depth
+                    bestVal = std::max(bestVal, minimax(depth + 1, maxDepth, !isMax, alpha, beta));
+                    // Undo the temporary move
+                    board[i][j] = prev;
+                    // Update alpha value for pruning
+                    alpha = std::max(alpha, bestVal);
+                    // Check for pruning opportunity
+                    if (beta <= alpha)
+                        break;
+                }
+            }
+        }
+        // Return the best value found
+        return bestVal;
+    }
+    // If it's the opponent's turn (minimizing player)
+    else
+    {
+        int bestVal = INT_MAX;
+        // Iterate through the board
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                // If the cell is empty
+                if (board[i][j] != 'X' && board[i][j] != 'O')
+                {
+                    // Make a temporary move for the opponent
+                    char prev = board[i][j];
+                    board[i][j] = 'X';
+                    // Recursively call minimax for the next depth
+                    bestVal = std::min(bestVal, minimax(depth + 1, maxDepth, !isMax, alpha, beta));
+                    // Undo the temporary move
+                    board[i][j] = prev;
+                    // Update beta value for pruning
+                    beta = std::min(beta, bestVal);
+                    // Check for pruning opportunity
+                    if (beta <= alpha)
+                        break;
+                }
+            }
+        }
+        // Return the best value found
+        return bestVal;
+    }
+}
