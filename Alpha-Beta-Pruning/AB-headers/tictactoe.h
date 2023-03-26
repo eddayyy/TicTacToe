@@ -13,7 +13,7 @@
 // Author Information
 //   Author name : Eduardo M.Nunez Gomez
 //   Author email : eduardonunez @csu.fullerton.edu
-//
+
 // Program information
 //   Program name: TicTacToe MiniMax 
 //   Programming languages : C++
@@ -47,20 +47,25 @@
 
 #include <iostream>
 
-class TicTacToe{
-    public:
-        TicTacToe();
-        void drawboard();
-        bool placeMarker(int slot);
-        int winner();
-        void swapPlayerAndMarker();
-        void validateMarker(char &player1_marker);
-        void game();
+class TicTacToe
+{
+private:
+    char board[3][3];                                        // Tic-Tac-Toe board
+    char current_marker;                                     // Current player's marker
+    int current_player;                                      // Current player's number
 
-    private:
-        char board[3][3];
-        char current_marker;
-        int current_player;
+public:
+    TicTacToe();                                             // Constructor
+
+    int minimax(int depth, int maxDepth, bool isMax,         // Minimax function with alpha-beta pruning
+                int alpha, int beta);
+    int evaluateBoard();                                     // Evaluate board positions for AI
+    void drawboard();                                        // Draw Tic-Tac-Toe board
+    bool placeMarker(int slot);                              // Place marker on the board
+    int winner();                                            // Check if there's a winner
+    void swapPlayerAndMarker();                              // Swap player number and marker
+    void validateMarker(char &player1_marker);               // Validate the player's marker choice
+    void game();                                             // Main game loop function
 };
 
 #endif // TICTACTOE_H

@@ -48,7 +48,7 @@
 cd "$(dirname "$0")"
 
 # Compile and link the source files
-g++ -o tictactoe -Iheaders sources/main.cpp sources/tictactoe.cpp
+g++ -o tictactoe -IAB-headers AB-sources/main.cpp AB-sources/tictactoe.cpp
 
 # Check if the compilation was successful
 if [ $? -eq 0 ]; then
