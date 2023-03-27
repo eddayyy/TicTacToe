@@ -54,15 +54,9 @@
 TicTacToe::TicTacToe()
 {
     // Initialize board
-    board[0][0] = '1';
-    board[0][1] = '2';
-    board[0][2] = '3';
-    board[1][0] = '4';
-    board[1][1] = '5';
-    board[1][2] = '6';
-    board[2][0] = '7';
-    board[2][1] = '8';
-    board[2][2] = '9';
+    board[0][0] = '1'; board[0][1] = '2'; board[0][2] = '3';
+    board[1][0] = '4'; board[1][1] = '5'; board[1][2] = '6';
+    board[2][0] = '7'; board[2][1] = '8'; board[2][2] = '9';
 
     // Set initial current marker and current player
     current_marker = 'X';
@@ -82,25 +76,33 @@ void TicTacToe::drawboard()
 // Function to place a marker on the board
 bool TicTacToe::placeMarker(int slot)
 {
-    int row = slot / 3, col = 0; // Calculate row and initialize col to 0
+    // Calculate row and initialize col to 0
+    int row = slot / 3, col = 0;
 
-    if (slot % 3 == 0) // If slot is divisible by 3
+    // If slot is divisible by 3
+    if (slot % 3 == 0)
     {
-        row = row - 1; // Decrement row by 1
-        col = 2;       // Set col to 2
+        // Decrement row by 1
+        row = row - 1;
+        // Set col to 2
+        col = 2;
     }
     else // If slot is not divisible by 3
     {
-        col = slot % 3 - 1; // Calculate col based on the remainder
+        // Calculate col based on the remainder
+        col = slot % 3 - 1;
     }
 
     // Check if the slot on the board is not already occupied by 'X' or 'O'
     if (board[row][col] != 'X' && board[row][col] != 'O')
     {
-        board[row][col] = current_marker; // Place the current marker on the board
-        return true;                      // Return true for successful placement
+        // Place the current marker on the board
+        board[row][col] = current_marker;
+        // Return true for successful placement
+        return true;
     }
-    return false; // Return false for unsuccessful placement (slot is already occupied)
+    // Return false for unsuccessful placement (slot is already occupied)
+    return false;
 }
 
 // Function to check for a winner
