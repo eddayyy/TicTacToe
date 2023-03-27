@@ -32,29 +32,33 @@
 //   Language : C++
 // ========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1=========2=========3**
 // Compiling and Linking this program and file:
-// File : r.sh
+// File : run_tictactoe.sh
 // All assembling, compiling, and linking has been condensed for the user into a single file the following is a user - tutorial.
 
 // Instructions : Enter the following in your linux terminal
 
-// chmod + x r.sh
-// ./ r.sh
+// chmod + x run_tictactoe.sh
+// ./run_tictactoe.sh
 
 // ===== Begin code area ======================================================================================================== */
 
 #include <iostream>
 #include "../headers/tictactoe.h"
 
+// Constructor initializes the board, current marker, and current player
 TicTacToe::TicTacToe()
 {
+    // Initialize board
     board[0][0] = '1'; board[0][1] = '2'; board[0][2] = '3';
     board[1][0] = '4'; board[1][1] = '5'; board[1][2] = '6';
     board[2][0] = '7'; board[2][1] = '8'; board[2][2] = '9';
+
+    // Set initial current marker and current player
     current_marker = 'X';
     current_player = 1;
 }
 
-// Drawing our board in 2 dimensions
+// Function to draw the Tic-Tac-Toe board
 void TicTacToe::drawboard()
 {
     std::cout << " " << board[0][0] << " | " << board[0][1] << " | " << board[0][2] << std::endl;
@@ -64,55 +68,68 @@ void TicTacToe::drawboard()
     std::cout << " " << board[2][0] << " | " << board[2][1] << " | " << board[2][2] << std::endl;
 }
 
+// Function to place a marker on the board
 bool TicTacToe::placeMarker(int slot)
 {
-    int row = slot / 3, col = 0;
-    if (slot % 3 == 0)
+    int row = slot / 3, col = 0; // Calculate row and initialize col to 0
+
+    if (slot % 3 == 0) // If slot is divisible by 3
     {
-        row = row - 1;
-        col = 2;
+        row = row - 1; // Decrement row by 1
+        col = 2;       // Set col to 2
     }
-    else
+    else // If slot is not divisible by 3
     {
-        col = slot % 3 - 1;
+        col = slot % 3 - 1; // Calculate col based on the remainder
     }
+
+    // Check if the slot on the board is not already occupied by 'X' or 'O'
     if (board[row][col] != 'X' && board[row][col] != 'O')
     {
-        board[row][col] = current_marker;
-        return true;
+        board[row][col] = current_marker; // Place the current marker on the board
+        return true;                      // Return true for successful placement
     }
-    return false;
+    return false; // Return false for unsuccessful placement (slot is already occupied)
 }
 
+// Function to check for a winner
 int TicTacToe::winner()
 {
     for (int i = 0; i < 3; i++)
     {
-        // rows
+        // Check for winning row
         if (board[i][0] == board[i][1] && board[i][1] == board[i][2])
         {
-            return current_player;
+            // Current player wins if row has the same marker
+            return current_player; 
         }
-        // columns
+        // Check for winning column
         if (board[0][i] == board[1][i] && board[1][i] == board[2][i])
         {
-            return current_player;
+            // Current player wins if column has the same marker
+            return current_player; 
         }
     }
-    // Diagonals
+    // Check for winning diagonal (top-left to bottom-right)
     if (board[0][0] == board[1][1] && board[1][1] == board[2][2])
     {
-        return current_player;
+        // Current player wins if diagonal has the same marker
+        return current_player;                      
     }
+    // Check for winning diagonal (top-right to bottom-left)
     if (board[0][2] == board[1][1] && board[1][1] == board[2][0])
     {
-        return current_player;
+        // Current player wins if diagonal has the same marker
+        return current_player; 
     }
-    return 0; // means no winner
+    // No winner found
+    return 0; 
 }
 
+// Function to swap the current player and marker
 void TicTacToe::swapPlayerAndMarker()
 {
+    // Swap the current marker (X or O)
     if (current_marker == 'X')
     {
         current_marker = 'O';
@@ -121,6 +138,8 @@ void TicTacToe::swapPlayerAndMarker()
     {
         current_marker = 'X';
     }
+
+    // Swap the current player (1 or 2)
     if (current_player == 1)
     {
         current_player = 2;
@@ -131,6 +150,7 @@ void TicTacToe::swapPlayerAndMarker()
     }
 }
 
+// Function to validate the player's marker choice
 void TicTacToe::validateMarker(char &player1_marker)
 {
     if (player1_marker != 'X' && player1_marker != 'O')
@@ -142,6 +162,7 @@ void TicTacToe::validateMarker(char &player1_marker)
     }
 }
 
+// Main game loop function
 void TicTacToe::game()
 {
     char player1_marker;

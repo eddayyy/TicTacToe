@@ -15,11 +15,11 @@
 //   Author email : eduardonunez @csu.fullerton.edu
 
 // Program information
-//   Program name: TicTacToe MiniMax 
+//   Program name: TicTacToe MiniMax
 //   Programming languages : C++
 //   Date program began : 2023 - Mar - 24 2300 PDT GMT - 07 : 00
 //   Date of last update : 2023 - Mar - 25 0108 PDT GMT - 07 : 00
-//   Files in this program : main.cpp, tictactoe.cpp, tictactoe.h, run_tictactoe.sh
+//   Files in this program : main.cpp, tictactoe.cpp, tictactoe.h, run_alphabeta.sh
 //   Status : Finished.
 //   References consulted : C++ Standard Library, Stack Overflow, and cppreference.com
 
@@ -32,13 +32,13 @@
 //   Language : C++
 // ========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1=========2=========3**
 // Compiling and Linking this program and file:
-// File : r.sh
+// File : run_alphabeta.sh
 // All assembling, compiling, and linking has been condensed for the user into a single file the following is a user - tutorial.
 
 // Instructions : Enter the following in your linux terminal
 
-// chmod + x r.sh
-// ./ r.sh
+// chmod + x run_alphabeta.sh
+// ./run_alphabeta.sh
 
 // ===== Begin code area ======================================================================================================== */
 
@@ -49,13 +49,10 @@
 
 class TicTacToe
 {
-private:
-    char board[3][3];                                        // Tic-Tac-Toe board
-    char current_marker;                                     // Current player's marker
-    int current_player;                                      // Current player's number
 
 public:
     TicTacToe();                                             // Constructor
+    ~TicTacToe() {};                                         // Destructor
 
     int minimax(int depth, int maxDepth, bool isMax,         // Minimax function with alpha-beta pruning
                 int alpha, int beta);
@@ -66,6 +63,11 @@ public:
     void swapPlayerAndMarker();                              // Swap player number and marker
     void validateMarker(char &player1_marker);               // Validate the player's marker choice
     void game();                                             // Main game loop function
+    
+private:
+    char board[3][3];                                        // Tic-Tac-Toe board
+    char current_marker;                                     // Current player's marker
+    int current_player;                                      // Current player's number
 };
 
 #endif // TICTACTOE_H

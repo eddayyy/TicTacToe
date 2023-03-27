@@ -19,8 +19,8 @@
 //   Programming languages : C++
 //   Date program began : 2023 - Mar - 24 0200 PDT GMT - 07 : 00
 //   Date of last update : (2023 - Mar - 25 0108 PDT GMT - 07 : 00)
-//   Files in this program : main.cpp, tictactoe.cpp, tictactoe.h, run_tictactoe.sh
-//   Status : In Progress.
+//   Files in this program : main.cpp, tictactoe.cpp, tictactoe.h, run_alphabeta.sh
+//   Status : Finished.
 //   References consulted : C++ Standard Library, Stack Overflow, and cppreference.com
 
 // Purpose:
@@ -32,13 +32,13 @@
 //   Language : C++
 // ========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1=========2=========3**
 // Compiling and Linking this program and file:
-// File : r.sh
+// File : run_alphabeta.sh
 // All assembling, compiling, and linking has been condensed for the user into a single file the following is a user - tutorial.
 
 // Instructions : Enter the following in your linux terminal
 
-// chmod + x r.sh
-// ./ r.sh
+// chmod + x run_alphabeta.sh
+// ./run_alphabeta.sh
 
 // ===== Begin code area ======================================================================================================== */
 

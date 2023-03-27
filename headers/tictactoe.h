@@ -32,13 +32,13 @@
 //   Language : C++
 // ========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1=========2=========3**
 // Compiling and Linking this program and file:
-// File : r.sh
+// File: run_tictactoe.sh
 // All assembling, compiling, and linking has been condensed for the user into a single file the following is a user - tutorial.
 
 // Instructions : Enter the following in your linux terminal
 
-// chmod + x r.sh
-// ./ r.sh
+// chmod + x run_tictactoe.sh
+// ./run_tictactoe.sh
 
 // ===== Begin code area ======================================================================================================== */
 
@@ -47,20 +47,23 @@
 
 #include <iostream>
 
-class TicTacToe{
+class TicTacToe
+{
     public:
-        TicTacToe();
-        void drawboard();
-        bool placeMarker(int slot);
-        int winner();
-        void swapPlayerAndMarker();
-        void validateMarker(char &player1_marker);
-        void game();
+        TicTacToe();                                         // Constructor
+        ~TicTacToe(){};                                      // Destructor
 
-    private:
-        char board[3][3];
-        char current_marker;
-        int current_player;
+        void drawboard();                                    // Draw Tic-Tac-Toe board
+        bool placeMarker(int slot);                          // Place marker on the board
+        int winner();                                        // Check if there's a winner
+        void swapPlayerAndMarker();                          // Swap player number and marker
+        void validateMarker(char &player1_marker);           // Validate the player's marker choice
+        void game();                                         // Main game loop function
+             
+    private:             
+        char board[3][3];                                    // Tic-Tac-Toe board
+        char current_marker;                                 // Current player's marker
+        int current_player;                                  // Current player's number
 };
 
 #endif // TICTACTOE_H
