@@ -43,6 +43,9 @@
 // ===== Begin code area ======================================================================================================== */
 
 #include <iostream>
+
+#include <limits>
+
 #include "../headers/tictactoe.h"
 
 // Constructor initializes the board, current marker, and current player
@@ -188,7 +191,20 @@ void TicTacToe::game()
         std::cout << "It's player " << current_player << "'s turn. Enter your move:\n";
         int slot;
         std::cin >> slot;
-        if (slot < 1 || slot > 9 || !int(slot))
+
+        // Checking for invalid inputs that cause std::cin to fail due to type incompatibilities
+        while (std::cin.fail())
+        {
+            // Clear Fail state
+            std::cin.clear();
+            // Ignore invalid input by clearing the input buffer
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            // Prompt user agaain and *HOPEFULLY* get a valid input
+            std::cout << "Invalid input. Please enter an integer: ";
+            std::cin >> slot;
+        }
+
+        if (slot < 1 || slot > 9)
         {
             std::cout << "That is an invalid slot, please try again!\n";
             i--;
