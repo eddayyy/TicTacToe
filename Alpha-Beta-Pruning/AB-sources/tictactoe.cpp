@@ -63,6 +63,142 @@ TicTacToe::TicTacToe()
     current_player = 1;
 }
 
+
+int TicTacToe::evaluateBoard()
+{
+    // Iterate through each row and column of the 3x3 board
+    for (int i = 0; i < 3; i++)
+    {
+        // Check rows for a winning combination
+        // If all three cells in the row are the same (either 'O' or 'X')
+        if (board[i][0] == board[i][1] && board[i][1] == board[i][2])
+        {
+            // If the winning combination is 'O', return a score of 10
+            if (board[i][0] == 'O')
+                return 10;
+            // If the winning combination is 'X', return a score of -10
+            else if (board[i][0] == 'X')
+                return -10;
+        }
+
+        // Check columns for a winning combination
+        // If all three cells in the column are the same (either 'O' or 'X')
+        if (board[0][i] == board[1][i] && board[1][i] == board[2][i])
+        {
+            // If the winning combination is 'O', return a score of 10
+            if (board[0][i] == 'O')
+                return 10;
+            // If the winning combination is 'X', return a score of -10
+            else if (board[0][i] == 'X')
+                return -10;
+        }
+    }
+
+    // Check the first diagonal for a winning combination
+    // If all three cells in the diagonal are the same (either 'O' or 'X')
+    if (board[0][0] == board[1][1] && board[1][1] == board[2][2])
+    {
+        // If the winning combination is 'O', return a score of 10
+        if (board[0][0] == 'O')
+            return 10;
+        // If the winning combination is 'X', return a score of -10
+        else if (board[0][0] == 'X')
+            return -10;
+    }
+
+    // Check the second diagonal for a winning combination
+    // If all three cells in the diagonal are the same (either 'O' or 'X')
+    if (board[0][2] == board[1][1] && board[1][1] == board[2][0])
+    {
+        // If the winning combination is 'O', return a score of 10
+        if (board[0][2] == 'O')
+            return 10;
+        // If the winning combination is 'X', return a score of -10
+        else if (board[0][2] == 'X')
+            return -10;
+    }
+
+    // If there is no winner yet, return a score of 0
+    return 0;
+}
+
+// Minimax function for determining the best move for the AI
+int TicTacToe::minimax(int depth, int maxDepth, bool isMax, int alpha, int beta)
+{
+    // Evaluate the current board state
+    int score = evaluateBoard();
+    // If AI is winning, return score adjusted for depth
+    if (score == 10)
+        return score - depth;
+    // If the opponent is winning, return score adjusted for depth
+    if (score == -10)
+        return score + depth;
+    // If the board is full, return a draw (0)
+    if (depth == 9)
+        return 0;
+
+    // If it's AI's turn (maximizing player)
+    if (isMax)
+    {
+        int bestVal = INT_MIN;
+        // Iterate through the board
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                // If the cell is empty
+                if (board[i][j] != 'X' && board[i][j] != 'O')
+                {
+                    // Make a temporary move for the AI
+                    char prev = board[i][j];
+                    board[i][j] = 'O';
+                    // Recursively call minimax for the next depth
+                    bestVal = std::max(bestVal, minimax(depth + 1, maxDepth, !isMax, alpha, beta));
+                    // Undo the temporary move
+                    board[i][j] = prev;
+                    // Update alpha value for pruning
+                    alpha = std::max(alpha, bestVal);
+                    // Check for pruning opportunity
+                    if (beta <= alpha)
+                        break;
+                }
+            }
+        }
+        // Return the best value found
+        return bestVal;
+    }
+    // If it's the opponent's turn (minimizing player)
+    else
+    {
+        int bestVal = INT_MAX;
+        // Iterate through the board
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                // If the cell is empty
+                if (board[i][j] != 'X' && board[i][j] != 'O')
+                {
+                    // Make a temporary move for the opponent
+                    char prev = board[i][j];
+                    board[i][j] = 'X';
+                    // Recursively call minimax for the next depth
+                    bestVal = std::min(bestVal, minimax(depth + 1, maxDepth, !isMax, alpha, beta));
+                    // Undo the temporary move
+                    board[i][j] = prev;
+                    // Update beta value for pruning
+                    beta = std::min(beta, bestVal);
+                    // Check for pruning opportunity
+                    if (beta <= alpha)
+                        break;
+                }
+            }
+        }
+        // Return the best value found
+        return bestVal;
+    }
+}
+
 // Function to draw the Tic-Tac-Toe board
 void TicTacToe::drawboard()
 {
@@ -284,137 +420,3 @@ void TicTacToe::game()
     }
 }
 
-int TicTacToe::evaluateBoard()
-{
-    // Iterate through each row and column of the 3x3 board
-    for (int i = 0; i < 3; i++)
-    {
-        // Check rows for a winning combination
-        // If all three cells in the row are the same (either 'O' or 'X')
-        if (board[i][0] == board[i][1] && board[i][1] == board[i][2])
-        {
-            // If the winning combination is 'O', return a score of 10
-            if (board[i][0] == 'O')
-                return 10;
-            // If the winning combination is 'X', return a score of -10
-            else if (board[i][0] == 'X')
-                return -10;
-        }
-
-        // Check columns for a winning combination
-        // If all three cells in the column are the same (either 'O' or 'X')
-        if (board[0][i] == board[1][i] && board[1][i] == board[2][i])
-        {
-            // If the winning combination is 'O', return a score of 10
-            if (board[0][i] == 'O')
-                return 10;
-            // If the winning combination is 'X', return a score of -10
-            else if (board[0][i] == 'X')
-                return -10;
-        }
-    }
-
-    // Check the first diagonal for a winning combination
-    // If all three cells in the diagonal are the same (either 'O' or 'X')
-    if (board[0][0] == board[1][1] && board[1][1] == board[2][2])
-    {
-        // If the winning combination is 'O', return a score of 10
-        if (board[0][0] == 'O')
-            return 10;
-        // If the winning combination is 'X', return a score of -10
-        else if (board[0][0] == 'X')
-            return -10;
-    }
-
-    // Check the second diagonal for a winning combination
-    // If all three cells in the diagonal are the same (either 'O' or 'X')
-    if (board[0][2] == board[1][1] && board[1][1] == board[2][0])
-    {
-        // If the winning combination is 'O', return a score of 10
-        if (board[0][2] == 'O')
-            return 10;
-        // If the winning combination is 'X', return a score of -10
-        else if (board[0][2] == 'X')
-            return -10;
-    }
-
-    // If there is no winner yet, return a score of 0
-    return 0;
-}
-
-// Minimax function for determining the best move for the AI
-int TicTacToe::minimax(int depth, int maxDepth, bool isMax, int alpha, int beta)
-{
-    // Evaluate the current board state
-    int score = evaluateBoard();
-    // If AI is winning, return score adjusted for depth
-    if (score == 10)
-        return score - depth;
-    // If the opponent is winning, return score adjusted for depth
-    if (score == -10)
-        return score + depth;
-    // If the board is full, return a draw (0)
-    if (depth == 9)
-        return 0;
-
-    // If it's AI's turn (maximizing player)
-    if (isMax)
-    {
-        int bestVal = INT_MIN;
-        // Iterate through the board
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                // If the cell is empty
-                if (board[i][j] != 'X' && board[i][j] != 'O')
-                {
-                    // Make a temporary move for the AI
-                    char prev = board[i][j];
-                    board[i][j] = 'O';
-                    // Recursively call minimax for the next depth
-                    bestVal = std::max(bestVal, minimax(depth + 1, maxDepth, !isMax, alpha, beta));
-                    // Undo the temporary move
-                    board[i][j] = prev;
-                    // Update alpha value for pruning
-                    alpha = std::max(alpha, bestVal);
-                    // Check for pruning opportunity
-                    if (beta <= alpha)
-                        break;
-                }
-            }
-        }
-        // Return the best value found
-        return bestVal;
-    }
-    // If it's the opponent's turn (minimizing player)
-    else
-    {
-        int bestVal = INT_MAX;
-        // Iterate through the board
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                // If the cell is empty
-                if (board[i][j] != 'X' && board[i][j] != 'O')
-                {
-                    // Make a temporary move for the opponent
-                    char prev = board[i][j];
-                    board[i][j] = 'X';
-                    // Recursively call minimax for the next depth
-                    bestVal = std::min(bestVal, minimax(depth + 1, maxDepth, !isMax, alpha, beta));
-                    // Undo the temporary move
-                    board[i][j] = prev;
-                    // Update beta value for pruning
-                    beta = std::min(beta, bestVal);
-                    // Check for pruning opportunity
-                    if (beta <= alpha)
-                        break;
-                }
-            }
-        }
-        // Return the best value found
-        return bestVal;
-    }
-}
