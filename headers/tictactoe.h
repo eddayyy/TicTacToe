@@ -11,8 +11,8 @@
 // ========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1=========2=========3**
 
 // Author Information
-//   Author name : Eduardo M.Nunez Gomez
-//   Author email : eduardonunez @csu.fullerton.edu
+//   Author name : Eduardo Nunez
+//   Author email : eduardonunez.eng@gmail.com
 //
 // Program information
 //   Program name: TicTacToe Game
@@ -49,21 +49,21 @@
 
 class TicTacToe
 {
-    public:
-        TicTacToe();                                         // Constructor
-        ~TicTacToe(){};                                      // Destructor
+public:
+    TicTacToe();    // Constructor
+    ~TicTacToe(){}; // Destructor
 
-        void drawboard();                                    // Draw Tic-Tac-Toe board
-        bool placeMarker(int slot);                          // Place marker on the board
-        int winner();                                        // Check if there's a winner
-        void swapPlayerAndMarker();                          // Swap player number and marker
-        void validateMarker(char &player1_marker);           // Validate the player's marker choice
-        void game();                                         // Main game loop function
-             
-    private:             
-        char board[3][3];                                    // Tic-Tac-Toe board
-        char current_marker;                                 // Current player's marker
-        int current_player;                                  // Current player's number
+    void drawboard();                          // Draw Tic-Tac-Toe board
+    bool placeMarker(int slot);                // Place marker on the board
+    int winner();                              // Check if there's a winner
+    void swapPlayerAndMarker();                // Swap player number and marker
+    void validateMarker(char &player1_marker); // Validate the player's marker choice
+    void game();                               // Main game loop function
+
+private:
+    char board[3][3];    // Tic-Tac-Toe board
+    char current_marker; // Current player's marker
+    int current_player;  // Current player's number
 };
 
 #endif // TICTACTOE_H

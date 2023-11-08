@@ -11,8 +11,8 @@
 // ========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1=========2=========3**
 
 // Author Information
-//   Author name : Eduardo M.Nunez Gomez
-//   Author email : eduardonunez @csu.fullerton.edu
+//   Author name : Eduardo Nunez
+//   Author email : eduardonunez.eng@gmail.com
 
 // Program information
 //   Program name: TicTacToe MiniMax
@@ -51,23 +51,23 @@ class TicTacToe
 {
 
 public:
-    TicTacToe();                                             // Constructor
-    ~TicTacToe() {};                                         // Destructor
+    TicTacToe();    // Constructor
+    ~TicTacToe(){}; // Destructor
 
-    int minimax(int depth, int maxDepth, bool isMax,         // Minimax function with alpha-beta pruning
+    int minimax(int depth, int maxDepth, bool isMax, // Minimax function with alpha-beta pruning
                 int alpha, int beta);
-    int evaluateBoard();                                     // Evaluate board positions for AI
-    void drawboard();                                        // Draw Tic-Tac-Toe board
-    bool placeMarker(int slot);                              // Place marker on the board
-    int winner();                                            // Check if there's a winner
-    void swapPlayerAndMarker();                              // Swap player number and marker
-    void validateMarker(char &player1_marker);               // Validate the player's marker choice
-    void game();                                             // Main game loop function
-    
+    int evaluateBoard();                       // Evaluate board positions for AI
+    void drawboard();                          // Draw Tic-Tac-Toe board
+    bool placeMarker(int slot);                // Place marker on the board
+    int winner();                              // Check if there's a winner
+    void swapPlayerAndMarker();                // Swap player number and marker
+    void validateMarker(char &player1_marker); // Validate the player's marker choice
+    void game();                               // Main game loop function
+
 private:
-    char board[3][3];                                        // Tic-Tac-Toe board
-    char current_marker;                                     // Current player's marker
-    int current_player;                                      // Current player's number
+    char board[3][3];    // Tic-Tac-Toe board
+    char current_marker; // Current player's marker
+    int current_player;  // Current player's number
 };
 
 #endif // TICTACTOE_H

@@ -11,7 +11,7 @@
 // ========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1=========2=========3**
 
 // Author Information
-//   Author name : Eduardo M.Nunez Gomez
+//   Author name : Eduardo Nunez
 //   Author email : eduardonunez.eng@gmail.com
 //
 // Program information
@@ -54,15 +54,20 @@
 TicTacToe::TicTacToe()
 {
     // Initialize board
-    board[0][0] = '1'; board[0][1] = '2'; board[0][2] = '3';
-    board[1][0] = '4'; board[1][1] = '5'; board[1][2] = '6';
-    board[2][0] = '7'; board[2][1] = '8'; board[2][2] = '9';
+    board[0][0] = '1';
+    board[0][1] = '2';
+    board[0][2] = '3';
+    board[1][0] = '4';
+    board[1][1] = '5';
+    board[1][2] = '6';
+    board[2][0] = '7';
+    board[2][1] = '8';
+    board[2][2] = '9';
 
     // Set initial current marker and current player
     current_marker = 'X';
     current_player = 1;
 }
-
 
 int TicTacToe::evaluateBoard()
 {
@@ -250,29 +255,29 @@ int TicTacToe::winner()
         if (board[i][0] == board[i][1] && board[i][1] == board[i][2])
         {
             // Current player wins if row has the same marker
-            return current_player; 
+            return current_player;
         }
         // Check for winning column
         if (board[0][i] == board[1][i] && board[1][i] == board[2][i])
         {
             // Current player wins if column has the same marker
-            return current_player; 
+            return current_player;
         }
     }
     // Check for winning diagonal (top-left to bottom-right)
     if (board[0][0] == board[1][1] && board[1][1] == board[2][2])
     {
         // Current player wins if diagonal has the same marker
-        return current_player;                      
+        return current_player;
     }
     // Check for winning diagonal (top-right to bottom-left)
     if (board[0][2] == board[1][1] && board[1][1] == board[2][0])
     {
         // Current player wins if diagonal has the same marker
-        return current_player; 
+        return current_player;
     }
     // No winner found
-    return 0; 
+    return 0;
 }
 
 // Function to swap the current player and marker
@@ -419,4 +424,3 @@ void TicTacToe::game()
         std::cout << "It's a draw!\n";
     }
 }
-
